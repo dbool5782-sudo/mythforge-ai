@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MythForge AI</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      background: #0b0b12;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 42px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #aaa;
+      margin-bottom: 35px;
+      font-size: 16px;
+    }
+
+    .card {
+      background: #151521;
+      border: 1px solid #29293a;
+      border-radius: 20px;
+      padding: 25px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #333348;
+      background: #0d0d16;
+      color: white;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      background: #ffffff;
+      color: #111;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #0d0d16;
+      border-radius: 12px;
+      display: none;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="logo">MYTHFORGE AI</div>
+
+    <div class="subtitle">
+      Create mythology videos with artificial intelligence.
+    </div>
+
+    <div class="card">
+
+      <label for="character">
+        Mythological Character
+      </label>
+
+      <input
+        id="character"
+        type="text"
+        placeholder="Example: Gilgamesh"
+      >
+
+      <button onclick="generateIdea()">
+        Generate Script
+      </button>
+
+      <div id="result"></div>
+
+    </div>
+
+  </div>
+
+  <script>
+    function generateIdea() {
+
+      const character =
+        document.getElementById("character").value.trim();
+
+      const result =
+        document.getElementById("result");
+
+      if (!character) {
+        result.style.display = "block";
+        result.innerHTML =
+          "Please enter a mythological character.";
+        return;
+      }
+
+      result.style.display = "block";
+
+      result.innerHTML =
+        "<strong>Coming soon...</strong><br><br>" +
+        "AI script generation for " +
+        character +
+        " will be connected here.";
+    }
+  </script>
+
+</body>
+</html>
