@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,6 +33,7 @@
       font-size: 42px;
       font-weight: bold;
       margin-bottom: 10px;
+      letter-spacing: 1px;
     }
 
     .subtitle {
@@ -46,7 +47,7 @@
       border: 1px solid #29293a;
       border-radius: 20px;
       padding: 25px;
-      text-align: left;
+      text-align: right;
     }
 
     label {
@@ -64,6 +65,11 @@
       color: white;
       font-size: 16px;
       margin-bottom: 15px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #777;
     }
 
     button {
@@ -89,12 +95,17 @@
       background: #0d0d16;
       border-radius: 12px;
       display: none;
-      line-height: 1.7;
+      line-height: 1.8;
       white-space: pre-wrap;
+      text-align: right;
     }
 
     .error {
       color: #ff7777;
+    }
+
+    .loading {
+      color: #aaa;
     }
   </style>
 </head>
@@ -106,23 +117,24 @@
     <div class="logo">MYTHFORGE AI</div>
 
     <div class="subtitle">
-      Create mythology videos with artificial intelligence.
+      اصنع نصوصًا أسطورية مذهلة بالذكاء الاصطناعي
     </div>
 
     <div class="card">
 
       <label for="character">
-        Mythological Character
+        الشخصية الأسطورية
       </label>
 
       <input
         id="character"
         type="text"
-        placeholder="Example: Gilgamesh"
+        placeholder="مثال: كلكامش"
+        autocomplete="off"
       >
 
       <button id="generateBtn" onclick="generateScript()">
-        Generate Script
+        توليد النص
       </button>
 
       <div id="result"></div>
@@ -147,16 +159,17 @@
         result.style.display = "block";
         result.className = "error";
         result.textContent =
-          "Please enter a mythological character.";
+          "يرجى إدخال اسم شخصية أسطورية.";
         return;
       }
 
       button.disabled = true;
-      button.textContent = "Generating...";
+      button.textContent = "جاري التوليد...";
 
       result.style.display = "block";
-      result.className = "";
-      result.textContent = "AI is creating your script...";
+      result.className = "loading";
+      result.textContent =
+        "الذكاء الاصطناعي يكتب النص...";
 
       try {
 
@@ -173,11 +186,26 @@
         const data = await response.json();
 
         if (!response.ok) {
+
+          const details =
+            data.details
+              ? JSON.stringify(data.details, null, 2)
+              : "";
+
           throw new Error(
-            data.error || "Something went wrong."
+            (data.error || "حدث خطأ غير معروف.") +
+            "\n\n" +
+            details
           );
         }
 
+        if (!data.script) {
+          throw new Error(
+            "لم يتم استلام نص من الذكاء الاصطناعي."
+          );
+        }
+
+        result.className = "";
         result.textContent = data.script;
 
       } catch (error) {
@@ -185,12 +213,12 @@
         result.className = "error";
 
         result.textContent =
-          "Error: " + error.message;
+          "خطأ:\n\n" + error.message;
 
       } finally {
 
         button.disabled = false;
-        button.textContent = "Generate Script";
+        button.textContent = "توليد النص";
 
       }
     }
