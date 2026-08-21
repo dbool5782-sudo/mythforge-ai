@@ -2,7 +2,7 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Generate AI script
+    // API: Generate mythology script
     if (url.pathname === "/api/generate" && request.method === "POST") {
       try {
         const body = await request.json();
@@ -16,18 +16,17 @@ export default {
         }
 
         const prompt = `
-You are a professional short-form video script writer.
-
 Create a compelling 45-60 second TikTok narration about the mythological character "${character}".
 
 Rules:
-- Write in clear Modern Standard Arabic that an Iraqi audience can easily understand.
-- Start with a powerful hook in the first sentence.
+- Write in clear Modern Standard Arabic.
+- Make it easy for an Iraqi audience to understand.
+- Start with a powerful hook.
 - Make it mysterious, exciting and cinematic.
-- Explain interesting information about the character.
-- Separate mythology from established historical facts.
-- Do not present uncertain legends as proven historical facts.
-- End with a curiosity-provoking line.
+- Explain interesting information.
+- Clearly distinguish mythology from established historical facts.
+- Do not present uncertain legends as proven facts.
+- End with a curiosity-provoking sentence.
 - Return ONLY the narration.
 `;
 
@@ -57,9 +56,7 @@ Rules:
 
         if (!response.ok) {
           return Response.json(
-            {
-              error: "Gemini API request failed."
-            },
+            { error: "Gemini API request failed." },
             { status: 500 }
           );
         }
@@ -69,9 +66,7 @@ Rules:
 
         if (!script) {
           return Response.json(
-            {
-              error: "Gemini returned an empty response."
-            },
+            { error: "Gemini returned an empty response." },
             { status: 500 }
           );
         }
@@ -83,15 +78,13 @@ Rules:
 
       } catch (error) {
         return Response.json(
-          {
-            error: "Server error."
-          },
+          { error: "Server error." },
           { status: 500 }
         );
       }
     }
 
-    // Serve the website
+    // Serve the new website from /public
     return env.ASSETS.fetch(request);
   }
 };
