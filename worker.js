@@ -57,8 +57,9 @@ Rules:
         if (!response.ok) {
   return Response.json(
     {
-      error: "Gemini API request failed.",
-      details: data
+     error: "Gemini API request failed.",
+details: data,
+status: response.status 
     },
     { status: 500 }
   );
