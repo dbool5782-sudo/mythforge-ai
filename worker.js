@@ -1,5 +1,6 @@
 export default {
   async fetch(request, env) {
+   console.log("GEMINI_API_KEY exists:", !!env.GEMINI_API_KEY);
     const url = new URL(request.url);
 
     // API: Generate mythology script
