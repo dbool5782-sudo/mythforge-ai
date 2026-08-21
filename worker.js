@@ -53,7 +53,8 @@ Rules:
         );
 
         const data = await response.json();
-
+console.log("Gemini status:", response.status);
+console.log("Gemini response:", JSON.stringify(data));
         if (!response.ok) {
   return Response.json(
     {
