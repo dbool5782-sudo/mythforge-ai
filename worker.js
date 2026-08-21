@@ -55,11 +55,14 @@ Rules:
         const data = await response.json();
 
         if (!response.ok) {
-          return Response.json(
-            { error: "Gemini API request failed." },
-            { status: 500 }
-          );
-        }
+  return Response.json(
+    {
+      error: "Gemini API request failed.",
+      details: data
+    },
+    { status: 500 }
+  );
+}
 
         const script =
           data?.candidates?.[0]?.content?.parts?.[0]?.text;
