@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MythForge AI</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      background: #0b0b12;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 650px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 42px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #aaa;
+      margin-bottom: 35px;
+      font-size: 16px;
+    }
+
+    .card {
+      background: #151521;
+      border: 1px solid #29293a;
+      border-radius: 20px;
+      padding: 25px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #333348;
+      background: #0d0d16;
+      color: white;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      background: white;
+      color: #111;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    #result {
+      margin-top: 20px;
+      padding: 18px;
+      background: #0d0d16;
+      border-radius: 12px;
+      display: none;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .error {
+      color: #ff7777;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="logo">MYTHFORGE AI</div>
+
+    <div class="subtitle">
+      Create mythology videos with artificial intelligence.
+    </div>
+
+    <div class="card">
+
+      <label for="character">
+        Mythological Character
+      </label>
+
+      <input
+        id="character"
+        type="text"
+        placeholder="Example: Gilgamesh"
+      >
+
+      <button id="generateBtn" onclick="generateScript()">
+        Generate Script
+      </button>
+
+      <div id="result"></div>
+
+    </div>
+
+  </div>
+
+  <script>
+    async function generateScript() {
+
+      const character =
+        document.getElementById("character").value.trim();
+
+      const button =
+        document.getElementById("generateBtn");
+
+      const result =
+        document.getElementById("result");
+
+      if (!character) {
+        result.style.display = "block";
+        result.className = "error";
+        result.textContent =
+          "Please enter a mythological character.";
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "Generating...";
+
+      result.style.display = "block";
+      result.className = "";
+      result.textContent = "AI is creating your script...";
+
+      try {
+
+        const response = await fetch("/api/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            character: character
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.error || "Something went wrong."
+          );
+        }
+
+        result.textContent = data.script;
+
+      } catch (error) {
+
+        result.className = "error";
+
+        result.textContent =
+          "Error: " + error.message;
+
+      } finally {
+
+        button.disabled = false;
+        button.textContent = "Generate Script";
+
+      }
+    }
+  </script>
+
+</body>
+</html>
